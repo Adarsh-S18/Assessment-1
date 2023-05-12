@@ -3,6 +3,8 @@ import { addMovie, deleteAMovie, getAMovie, getAllMovie, updateAMovie } from "..
 import multer from 'multer';
 import path from 'path';
 
+// Setup for MULTER file Upload
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public/images');
@@ -12,10 +14,10 @@ const storage = multer.diskStorage({
         const extension = path.extname(file.originalname);
         cb(null, file.fieldname + '-' + uniqueSuffix + extension);
     }
+    
 });
 
 const upload = multer({ storage });
-
 
 const router = express.Router()
 
@@ -25,7 +27,7 @@ router.get('/', getAllMovie) // get All the movies
 
 router.get('/:id', getAMovie) // get a movie
 
-router.put('/:id', updateAMovie) // update a movie
+router.put('/:id',upload.single('image'), updateAMovie) // update a movie
 
 router.delete('/:id', deleteAMovie) // delete a movie
 
